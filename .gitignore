@@ -1,0 +1,24 @@
+#Ignore images
+images/
+
+
+#Ignore nohup
+nohup.out
+
+
+#Ignore data files and folders
+STRUCTURE/
+data/
+*.txt
+*.xlsx
+*.zip
+*.nex
+*.str
+*.vcf
+*.xml
+*.inp
+*.gtx
+*.gdv
+
+#ignore notebook checkpoints
+.ipynb_checkpoints/

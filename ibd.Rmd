@@ -1,0 +1,245 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+#clear working environment
+rm(list=ls())
+```
+
+
+
+```{r}
+getwd()
+```
+
+
+```{r}
+#load required packages
+library("adegenet")
+library("ade4")
+library("vcfR")
+```
+
+
+EUROPEAN
+
+bring in vcf file
+```{r}
+vcf<-read.vcfR("data/chosen_eur.vcf")
+```
+
+see summary of what vcf is
+```{r}
+vcf
+```
+
+```{r}
+head(vcf)
+```
+
+```{r}
+#convert from vcf to genind
+a<-vcfR2genind(vcf)
+```
+
+
+```{r}
+a
+```
+
+
+```{r}
+#import dataframe to match individuals with populations
+df_pop<-read.table("data/Eur_vcf_pop.txt", header=FALSE)
+```
+
+```{r}
+df_pop
+```
+
+```{r}
+#column with populations listed
+df_pop$V2
+```
+
+```{r}
+#plug in populations to genind object
+a@pop <- as.factor(df_pop$V2)
+```
+
+```{r}
+a
+```
+
+```{r}
+#find and plot euclidean distances
+#distgenEUCL <- dist(a, method = "euclidean", diag = FALSE, upper = FALSE, p = 2)
+#hist(distgenEUCL)
+```
+
+
+```{r}
+#convert from genind to genpop object
+tt<-genind2genpop(a)
+```
+
+```{r}
+tt
+```
+```{r}
+#calculate genetic distances
+ Dgen <- dist.genpop(tt,method=2)
+```
+```{r}
+Dgen
+```
+
+
+```{r}
+#import dataframe to get coordinates for populations
+eur_coords<-read.table("data/vcfEur.txt", header=TRUE)
+```
+```{r}
+eur_coords
+```
+```{r}
+#calculate geographic distances
+ Dgeo <- dist(eur_coords)
+```
+
+```{r}
+Dgeo
+```
+
+```{r}
+#calculate isolation by distance
+ibd <- mantel.randtest(Dgen,Dgeo)
+```
+
+```{r}
+ibd
+```
+```{r}
+plot(ibd)
+```
+
+```{r}
+#plot geogrpahic vs genetic distances
+plot(Dgeo,Dgen, pch=20,cex=.5) 
+```
+
+NORTH AMERICAN
+
+bring in vcf file
+```{r}
+vcf_nam<-read.vcfR("data/chosen_nam.vcf")
+```
+```{r}
+vcf_nam
+```
+
+```{r}
+head(vcf_nam)
+```
+```{r}
+b<-vcfR2genind(vcf_nam)
+```
+
+```{r}
+b
+```
+
+
+```{r}
+df_pop_nam<-read.table("data/Nam_vcf_pop.txt", header=FALSE)
+```
+
+```{r}
+head(df_pop_nam)
+```
+
+```{r}
+b@pop <- as.factor(df_pop_nam$V2)
+```
+
+
+
+```{r}
+b
+```
+
+
+
+```{r}
+nn<-genind2genpop(b)
+```
+
+
+```{r}
+nn
+```
+
+method 2 = angular distance or Edwards' distance (Euclidean):
+```{r}
+Dgen_nam <- dist.genpop(nn,method=2)
+```
+
+
+```{r}
+Dgen_nam
+```
+
+```{r}
+nam_coords<-read.table("data/vcfNam.txt", header=TRUE)
+```
+
+```{r}
+nam_coords
+```
+
+
+```{r}
+ Dgeo_nam <- dist(nam_coords)
+```
+
+
+```{r}
+Dgeo_nam
+```
+```{r}
+#Dgen_nam
+```
+
+```{r}
+#Dgeo_nam
+```
+
+```{r}
+ibd_nam <- mantel.randtest(Dgen_nam,Dgeo_nam)
+```
+
+```{r}
+dim(as.matrix(Dgen_nam))
+dim(as.matrix(Dgeo_nam))
+```
+```{r}
+ibd_nam
+```
+
+```{r}
+plot(ibd_nam)
+```
+```{r}
+plot(Dgeo_nam,Dgen_nam, pch=20,cex=.5) 
+```
+Isolation by distance not significant in either continent
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).

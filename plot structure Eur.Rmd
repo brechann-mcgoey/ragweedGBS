@@ -1,0 +1,92 @@
+---
+title: "plotting STRUCTURE"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+rm(list=ls())
+```
+
+```{r}
+#get working directory
+getwd()
+```
+
+
+```{r}
+# install dependencies and devtools
+#install.packages(c("Cairo","ggplot2","gridExtra","gtable","tidyr","devtools"),dependencies=T)
+```
+```{r}
+library(Cairo)
+```
+
+```{r}
+# install pophelper package from GitHub
+#devtools::install_github('royfrancis/pophelper')
+```
+
+
+```{r}
+# load library for use
+library(pophelper)
+```
+```{r}
+inds<-read.table("eur_pops_only.txt", header=T)
+```
+```{r}
+head(inds)
+```
+
+```{r}
+nrow(inds)
+```
+
+
+```{r}
+#inds$Pop<-factor(inds$Pop)
+```
+```{r}
+
+inds$Pop<-as.character(inds$Pop)
+```
+
+```{r}
+onelabset1 <- inds[,2,drop=FALSE]
+```
+```{r}
+onelabset1
+```
+
+
+```{r}
+try<-readQ('eur_with_pops_k3_run3_f')
+```
+
+"shiny"=c("#1D72F5","#DF0101","#77CE61"
+
+```{r}
+plotQ(try,imgtype="pdf",basesize=11,grplab=onelabset1,grplabsize=2,linesize=0.8,pointsize=4,clustercol=c("#1D72F5","#DF0101","#77CE61"))
+```
+
+```{r}
+p1
+```
+
+```{r}
+plotQ(try)
+```
+```{r}
+plotQ(try,showdiv=T)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
