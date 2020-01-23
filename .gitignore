@@ -9,7 +9,6 @@ nohup.out
 #Ignore data files and folders
 STRUCTURE/
 data/
-*.txt
 *.xlsx
 *.zip
 *.nex
